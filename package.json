@@ -12,6 +12,8 @@
     "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "dependencies": {
+    "@vue/cli-plugin-pwa": "^3.5.1",
+    "sw-precache-webpack-plugin": "^0.11.5",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
