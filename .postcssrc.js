@@ -11,9 +11,9 @@ module.exports = {
       "postcss-cssnext": {},
       "postcss-px-to-viewport": {
           // 视窗的宽度，对应的是我们设计稿的宽度，一般是750
-          viewportWidth: 750,     // (Number) The width of the viewport.
+          viewportWidth: 720,     // (Number) The width of the viewport.
           // 视窗的高度，根据750设备的宽度来指定，一般指定1334，也可以不配置
-          viewportHeight: 1334,    // (Number) The height of the viewport.
+          viewportHeight: 1280,    // (Number) The height of the viewport.
           // 指定`px`转换为视窗单位值的小数位数
           unitPrecision: 3,       // (Number) The decimal numbers to allow the REM units to grow to.
           // 指定需要转换成的视窗单位，建议使用vw
