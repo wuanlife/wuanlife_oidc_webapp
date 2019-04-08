@@ -25,7 +25,9 @@ module.exports = {
           // 允许在媒体查询中转换`px`
           mediaQuery: false       // (Boolean) Allow px to be converted in media queries.
       },
-      "postcss-viewport-units":{},
+      "postcss-viewport-units":{
+          filterRule: rule => rule.nodes.findIndex(i => i.prop === 'content') === -1
+      },
       "cssnano": {
           preset: "advanced",
           autoprefixer: false,
