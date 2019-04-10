@@ -9,10 +9,10 @@
     <div class="login-container">
       <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px">
         <el-form-item prop="email">
-          <el-input type="text" v-model="loginForm.email" auto-complete="off" placeholder="邮箱" suffix-icon="iconyouxiang" class="email"></el-input>
+          <el-input type="text" v-model="loginForm.email" auto-complete="off" placeholder="邮箱" suffix-icon="iconfont iconyouxiang" class="email"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码" suffix-icon="iconpassword" class="password"></el-input>
+          <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码" suffix-icon="iconfont iconpassword" class="password"></el-input>
         </el-form-item>
         <el-form-item style="width:100%;">
           <el-button type="primary" style="width:100%;" @click="onSubmit('loginForm')" :loading="loading">登录</el-button>
@@ -96,7 +96,7 @@ export default {
         }).then(getAccess)
         .then((res) => {
           this.$cookie.set(`${client_id || 'wuan'}-access-token`, res["Access-Token"], 7);
-          this.$router.push({ path: return_to || '/personal/profile' });
+          this.$router.push({ path: return_to || '/signin' });
           this.loading = false;
         })
         .catch(err => {

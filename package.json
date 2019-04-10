@@ -91,10 +91,10 @@
     }
   },
   "husky": {
-        "hooks": {
-            "commitmsg": "commitlint -e $GIT_PARAMS"
-        }
-  },      
+    "hooks": {
+      "commitmsg": "commitlint -e $GIT_PARAMS"
+    }
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",

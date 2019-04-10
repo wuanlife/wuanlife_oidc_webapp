@@ -12,7 +12,7 @@ export function getAccess (params = {scope: 'public_profile'}) {
     scope: params.scope
   }
   return fetch({
-    url: `/auth`,
+    url: `api/auth`,
     method: 'post',
     data
   })

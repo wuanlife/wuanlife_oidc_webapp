@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 const Login = resolve => require.ensure([], () => resolve(require('../views/login/index')), 'Login') // 登录
 const Signup = resolve => require.ensure([], () => resolve(require('../views/signup/index')), 'Signup') // 注册
-const Signin = resolve => require.ensure([], () => resolve(require('../views/signin')), 'Signin') // 签到
+const Signin = resolve => require.ensure([], () => resolve(require('../views/signin/index')), 'Signin') // 签到
 
 Vue.use(Router)
 
