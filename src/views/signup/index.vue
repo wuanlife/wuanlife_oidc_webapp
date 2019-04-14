@@ -46,7 +46,7 @@ export default {
       var myregName = /^[0-9a-zA-Z\u4E00-\u9FA5_]*$/
       if (value === '') {
         callback(new Error('请输入昵称'))
-      } else if (value.length < 6 || value.length > 18) {
+      } else if (value.length < 4 || value.length > 18) {
         callback(new Error('请输入6-18位字符作为昵称！'))
       } else if (!myregName.test(value)) {
         callback(new Error('只允许中文、数字、字母和下划线！'))
@@ -101,10 +101,12 @@ export default {
         })
         this.$router.push({path: return_to || '/'})
       }).catch(err => {
-         Notification.error({
-         message: err.data.error,
-         offset: 60
-        })
+        if (err.data.infocode="400") {
+          Notification.error({
+            message: "邮箱或用户名已被注册",
+            offset: 60
+          })
+        }
         this.loading = false
       })
      } else {
