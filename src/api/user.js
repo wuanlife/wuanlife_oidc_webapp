@@ -97,3 +97,28 @@ export function changePoints({id, data}) {
     data: data
   })
 }
+
+// 获取午安果数量(总数)
+export function totalFruit({user_id, value}) {
+
+  return fetch({
+    url:`/api/users/${user_id}/wuan_fruit`,
+    method: 'get',
+  })
+}
+
+// 签到 单次签到获得午安果
+export function signFruit({user_id, value}) {
+  return fetch({
+    url:`/api/users/${user_id}/wuan_sign`,
+    method: 'get'
+  })
+}
+
+// 获取签到规则及当日签到状态
+export function signFruitInfo({id, range_min, range_max, is_sign}) {
+  return fetch({
+    url:`/api/users/${id}/wuan_sign_info`,
+    method: 'get'
+  })
+}
