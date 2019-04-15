@@ -96,14 +96,16 @@ export default {
         }).then(getAccess)
         .then((res) => {
           this.$cookie.set(`${client_id || 'wuan'}-access-token`, res["Access-Token"], 7);
-          this.$router.push({ path: return_to || '/signin' });
+          this.$router.push({ path: return_to || '/' });
           this.loading = false;
         })
         .catch(err => {
-          Notification.error({
-            message: err.data.error,
-            offset: 60
-          })
+          if (err.data.infoCode="422") {
+            Notification.error({
+              message: "邮箱或密码错误",
+              offset: 60
+            })
+          }
           this.loading = false;
         })
       })
