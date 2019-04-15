@@ -9,13 +9,13 @@
     <div class="signup-container">
       <el-form :model="signupForm" :rules="signupRules" ref="signupForm" label-position="left" label-width="0px" class="signup-item">
         <el-form-item prop="email">
-          <el-input type="text" v-model="signupForm.email" auto-complete="off" placeholder="邮箱" suffix-icon="iconyouxiang" class="email"></el-input>
+          <el-input type="text" v-model="signupForm.email" auto-complete="off" placeholder="邮箱" suffix-icon="iconfont iconyouxiang" class="email"></el-input>
         </el-form-item>
         <el-form-item prop="name">
-          <el-input type="text" v-model="signupForm.name" auto-complete="off" placeholder="昵称" suffix-icon="iconren" class="name"></el-input>
+          <el-input type="text" v-model="signupForm.name" auto-complete="off" placeholder="昵称" suffix-icon="iconfont iconren" class="name"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" v-model="signupForm.password" auto-complete="off" placeholder="密码" suffix-icon="iconpassword" class="password"></el-input>
+          <el-input type="password" v-model="signupForm.password" auto-complete="off" placeholder="密码" suffix-icon="iconfont iconpassword" class="password"></el-input>
         </el-form-item>
         <el-form-item style="width:100%;">
           <el-button type="primary" style="width:100%;" @click="handleSubmit('signupForm')" :loading="loading">注册</el-button>
