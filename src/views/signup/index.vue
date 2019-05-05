@@ -7,115 +7,87 @@
       <span class="tabs-signup">注册</span>
     </div>
     <div class="signup-container">
-      <el-form :model="signupForm" :rules="signupRules" ref="signupForm" label-position="left" label-width="0px" class="signup-item">
-        <el-form-item prop="email">
-          <el-input type="text" v-model="signupForm.email" auto-complete="off" placeholder="邮箱" suffix-icon="iconfont iconyouxiang" class="email"></el-input>
-        </el-form-item>
-        <el-form-item prop="name">
-          <el-input type="text" v-model="signupForm.name" auto-complete="off" placeholder="昵称" suffix-icon="iconfont iconren" class="name"></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input type="password" v-model="signupForm.password" auto-complete="off" placeholder="密码" suffix-icon="iconfont iconpassword" class="password"></el-input>
-        </el-form-item>
-        <el-form-item style="width:100%;">
-          <el-button type="primary" style="width:100%;" @click="handleSubmit('signupForm')" :loading="loading">注册</el-button>
-        </el-form-item>
-      </el-form>
+      <form :model="signupForm" ref="signupForm" label-position="left" label-width="0px" class="signup-form">
+        <div class="signup-form-item" prop="email">
+          <input type="text" v-validate ="'required|email'" name="email" v-model="signupForm.email" auto-complete="off" placeholder="邮箱" class="item-input">
+          <span v-show="errors.has('email')" class="item-error" v-cloak> {{ errors.first('email') }} </span>
+          <i class="icon iconfont iconyouxiang"></i>
+        </div>
+        <div class="signup-form-item" prop="name">
+          <input type="text" v-validate ="'required|name'" name="name" v-model="signupForm.name" auto-complete="off" placeholder="昵称" class="item-input">
+          <span v-show="errors.has('name')" class="item-error" v-cloak> {{ errors.first('name') }} </span>
+          <i class="icon iconfont iconren"></i>
+        </div>
+        <div class="signup-form-item" prop="password">
+          <input type="password" v-validate ="'required|password'" name="password" v-model="signupForm.password" auto-complete="off" placeholder="密码" class="item-input">
+          <span v-show="errors.has('password')" class="item-error" v-cloak> {{ errors.first('password') }} </span>
+          <i class="icon iconfont iconpassword"></i>
+        </div>
+        <div class="signup-form-item" style="width:100%;">
+          <button type="button" style="width:100%;" @click="handleSubmit('signupForm')" :loading="loading" class="item-button">注册</button>
+        </div>
+      </form>
+    </div>
+    <div class="login-toast">
+      <loading class="loading-toast" v-model="showLoadingValue" type="text" :time="2000" is-show-mask :text="lodingText" position="middle"></loading>
+      <toast class="err-toast" v-model="showToastValue" type="text" :time="2000" is-show-mask :text="toastText" position="middle" width="400px"></toast>
     </div>
   </div>
 </template>
 
 <script>
 import { signup } from 'api/user'
-import { Notification } from 'element-ui'
-import { mapGetters } from 'vuex'
+import { Toast, Loading } from 'vux'
 
 export default {
+  name: 'login-form',
+  components: {
+    Toast,
+    Loading
+  },
   data () {
-    var validateMail = (rule, value, callback) => {
-      var myreg = /^([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
-      if (value === '') {
-        callback(new Error('请输入邮箱'))
-      } else if (!myreg.test(value)) {
-        callback(new Error('请填写正确的邮箱格式！'))
-      } else {
-        callback()
-      }
-    }
-    var validateName = (rule, value, callback) => {
-      var myregName = /^[0-9a-zA-Z\u4E00-\u9FA5_]*$/
-      if (value === '') {
-        callback(new Error('请输入昵称'))
-      } else if (value.length < 4 || value.length > 18) {
-        callback(new Error('请输入6-18位字符作为昵称！'))
-      } else if (!myregName.test(value)) {
-        callback(new Error('只允许中文、数字、字母和下划线！'))
-      } else {
-        callback()
-      }
-    }
-    var validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else if (value.length < 6 || value.length > 20) {
-        callback(new Error('请填写6-20位密码'))
-      } else {
-        callback()
-      }
-    }
     return {
+      showToastValue: false,
+      toastText: '',
+      showLoadingValue: false,
+      lodingText: '',
       loading: false,
       signupForm: {
         email: '',
         name: '',
         password: ''
-      },
-      signupRules: {
-        email: [{ validator: validateMail, trigger: 'blur' }],
-        name: [{ validator: validateName, trigger: 'blur' }],
-        password: [{ validator: validatePass, trigger: 'blur' }]
       }
     }
-  },
-  computed: {
-    ...mapGetters(['user'])
   },
   methods: {
     handleSubmit (formName) {
       /* eslint-disable */
-      this.$refs[formName].validate((valid) => {
-      if (valid) {
-      const self = this
-      const { client_id, return_to } = this.$route.query
-      this.loading = true
-      signup({
-        name: this.signupForm.name,
-        email: this.signupForm.email,
-        password: this.signupForm.password,
-        client_id: client_id || 'wuan'
-      }).then(res => {
-        this.$cookie.set(`${client_id}-id-token`, res['ID-Token'], 7)
-        Notification.success({
-          message: '注册成功',
-          offset: 60
-        })
-        this.$router.push({path: return_to || '/'})
-      }).catch(err => {
-        if (err.data.infocode="400") {
-          Notification.error({
-            message: "邮箱或用户名已被注册",
-            offset: 60
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.showLoadingValue = true;
+          const self = this
+          const { client_id, return_to } = this.$route.query
+          this.loading = true
+          signup({
+            name: this.signupForm.name,
+            email: this.signupForm.email,
+            password: this.signupForm.password,
+            client_id: client_id || 'wuan'
+          }).then(res => {
+            this.$cookie.set(`${client_id}-id-token`, res['ID-Token'], 7)
+            this.$router.push({path: return_to || '/'})
+          }).catch(err => {
+            if (err.data.infocode="400") {
+              this.showLoadingValue = false;
+              this.showToastValue = true;
+              this.toastText = "邮箱或用户名已被占用";
+              return;
+            }
           })
         }
-        this.loading = false
       })
-     } else {
-       return false
-     }
     }
-   )
   }
- }
 }
 </script>
 
@@ -147,12 +119,15 @@ export default {
 }
 .signup-container {
   margin: 180px 70px auto 70px;
-  .el-form-item {
+  .signup-form-item {
+    position: relative;
     margin-bottom: 80px;
-    .el-input__inner {
+    .item-input {
+      width: 100%;
       font-size: 32px;
       background: #f6f6f6;
       height: 72px;
+      border: 1px solid #dcdfe6;
       border-radius: 36px;
       padding: 33px;
       border-color: #c9c9c9;
@@ -163,20 +138,24 @@ export default {
         background: none;
       }
     }
-    .el-input__icon {
-      color: #5677fc;
-      font-size: 36px;
-      padding: 15px 48px;
-    }
-    .el-form-item__error {
+    .item-error {
+      color: #ff0000;
       font-size: 24px;
       padding-left: 33px;
-      padding-top: 10px;
     }
-    .el-button--primary {
+    .icon {
+      position: absolute;
+      color: #5677fc;
+      font-size: 36px;
+      top: 15px;
+      right: 50px;
+    }
+    .item-button {
+      color: #fefefe;
       font-size: 32px;
       background: #5677fc;
       height: 72px;
+      border: 1px solid #dcdfe6;
       border-radius: 36px;
       border-color: #c9c9c9;
       margin-top: 70px;

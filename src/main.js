@@ -12,6 +12,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // cookie
 import VueCookie from './plugin/vue-cookie'
+// 表单验证
+import '../static/validate.js'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
