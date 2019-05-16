@@ -1,0 +1,21 @@
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin relative {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+//文字溢出隐藏
+@mixin text-ellipsis($maxWidth: 100%) {
+  max-width: $maxWidth;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
