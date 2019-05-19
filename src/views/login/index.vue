@@ -59,7 +59,7 @@ export default {
     const idToken = this.$cookie.get(`${clientId}-id-token`)
     // 登录后链接到签到界面
     if (idToken !== null && idToken !== '') {
-      this.$router.push({ path: '/login' })
+      this.$router.push({ path: '/signin' })
     }
   },
   methods: {
@@ -85,7 +85,7 @@ export default {
           }).then(getAccess)
           .then((res) => {
             this.$cookie.set(`${client_id || 'wuan'}-access-token`, res["Access-Token"], 7);
-            this.$router.push({ path: return_to || '/signup' });
+            this.$router.push({ path: return_to || '/signin' });
             this.loading = false;
           })
           .catch(err => {
@@ -174,11 +174,6 @@ export default {
       border-color: #c9c9c9;
       margin-top: 70px;
     }
-  }
-}
-.login-toast {
-  .weui-toast__content {
-    font-size: 30px;
   }
 }
 </style>
