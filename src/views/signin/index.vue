@@ -25,9 +25,14 @@
         <p>
           获得了<span class="num">{{ userInfo.singleFruit }}</span>午安果
         </p>
-        <el-button class="btn dia-btn" type="button" @click="HideD">我知道了</el-button>
+        <button class="btn dia-btn" type="button" @click="HideD">我知道了</button>
       </div>
     </Dialog>
+
+    <div class="signin-toast">
+      <loading class="loading-toast" v-model="showLoadingValue" type="text" :time="2000" is-show-mask :text="lodingText" position="middle"></loading>
+      <toast class="err-toast" v-model="showToastValue" type="text" :time="2000" is-show-mask :text="toastText" position="middle" width="400px"></toast>
+    </div>
   </div>
 </template>
 
@@ -36,14 +41,22 @@
 // import { getToken } from 'api/qiniu'
 import { totalFruit, signFruitInfo, signFruit } from 'api/user'
 import Dialog from '@/components/dialog'
+import { Toast, Loading } from 'vux'
 
 export default {
   name: 'SignIn',
   components: {
-    Dialog
+    Dialog,
+    Toast,
+    Loading
   },
   data () {
     return {
+      showToastValue: false,
+      toastText: '',
+      showLoadingValue: false,
+      lodingText: '',
+      loading: false,
       showDialog: false,
       issignBtn: true,
       userInfo: {
@@ -58,8 +71,17 @@ export default {
     }
   },
   mounted () {
-    this.totalFruit()
-    this.signFruitInfo()
+    // 未登录时自动跳转回登录页
+    const clientId = this.$route.query.client_id || 'wuan'
+    const idToken = this.$cookie.get(`${clientId}-id-token`)
+    // 登录后链接到签到界面
+    if (!idToken) {
+      alert('抱歉，尚未登录')
+      this.$router.push({ path: '/login' })
+    } else {
+      this.signFruitInfo()
+      this.totalFruit()
+    }
   },
   methods: {
     // 出现弹窗
@@ -70,6 +92,7 @@ export default {
     HideD () {
       let that = this
       that.showDialog = false
+      this.$router.push({ path: '/signin' })
     },
     // 获取午安果数量
     totalFruit () {
@@ -84,10 +107,9 @@ export default {
         }
         this.$store.commit('SET_PROFILE', profile)
       }).catch(err => {
-        Notification.error({
-          message: err.data.error,
-          offset: 60
-        })
+        this.showLoadingValue = false
+        this.showToastValue = true
+        this.toastText = err.data.infoCode
       })
     },
     // 获取签到规则及当日签到状态
@@ -108,20 +130,19 @@ export default {
           is_sign: that.fruit.issign
         }
         this.$store.commit('SET_PROFILE', profile)
-      }).catch(err => {
-        Notification.error({
-          message: err.data.error,
-          offset: 60
-        })
-      })
 
-      if (that.$store.getters.profile.is_sign === 1) {
-        that.issignBtn = true
-      } else {
-        that.issignBtn = false
-      }
+        if (that.fruit.issign === 1) {
+          that.issignBtn = true
+        } else {
+          that.issignBtn = false
+        }
+      }).catch(err => {
+        this.showLoadingValue = false
+        this.showToastValue = true
+        this.toastText = err.data.infoCode
+      })
     },
-    // 获取签到规则及当日签到状态
+    // 签到
     signFruit () {
       let that = this
       if (that.$store.getters.profile.is_sign !== 1) {
@@ -136,12 +157,10 @@ export default {
           }
           this.$store.commit('SET_PROFILE', profile)
         }).catch(err => {
-          Notification.error({
-            message: err.data.error,
-            offset: 60
-          })
+          this.showLoadingValue = false
+          this.showToastValue = true
+          this.toastText = err.data.infoCode
         })
-        this.issignBtn = true
       }
     }
   }
