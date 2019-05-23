@@ -59,7 +59,7 @@ export default {
     const idToken = this.$cookie.get(`${clientId}-id-token`)
     // 登录后链接到签到界面
     if (idToken !== null && idToken !== '') {
-      this.$router.push({ path: '/signin' })
+      this.$router.push({ path: '/checkin' })
     }
   },
   methods: {
@@ -85,7 +85,7 @@ export default {
           }).then(getAccess)
           .then((res) => {
             this.$cookie.set(`${client_id || 'wuan'}-access-token`, res["Access-Token"], 7);
-            this.$router.push({ path: return_to || '/signin' });
+            this.$router.push({ path: return_to || '/checkin' });
             this.loading = false;
           })
           .catch(err => {

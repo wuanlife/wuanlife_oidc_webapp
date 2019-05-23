@@ -1,16 +1,16 @@
 
 <template>
-  <div class="signin">
+  <div class="checkin">
     <header class="header">午安果</header>
     <div class="content">
       <div>您当前拥有午安果</div>
       <div class="num">{{ userInfo.totalFruit }}</div>
       <div class="btn-box">
-        <button v-if="issignBtn" disabled type="buttom" class="btn signin-btn">
+        <button v-if="issignBtn" disabled type="buttom" class="btn checkin-btn">
           <i class="icon iconfont iconyiqiandao"></i>
           <div>已签到</div>
         </button>
-        <button v-else type="buttom" class="btn signin-btn" @click="signFruit">
+        <button v-else type="buttom" class="btn checkin-btn" @click="signFruit">
           <i class="icon iconfont iconqiandao"></i>
           <div>签到</div>
         </button>
@@ -29,7 +29,7 @@
       </div>
     </Dialog>
 
-    <div class="signin-toast">
+    <div class="checkin-toast">
       <loading class="loading-toast" v-model="showLoadingValue" type="text" :time="2000" is-show-mask :text="lodingText" position="middle"></loading>
       <toast class="err-toast" v-model="showToastValue" type="text" :time="2000" is-show-mask :text="toastText" position="middle" width="400px"></toast>
     </div>
@@ -44,7 +44,7 @@ import Dialog from '@/components/dialog'
 import { Toast, Loading } from 'vux'
 
 export default {
-  name: 'SignIn',
+  name: 'Checkin',
   components: {
     Dialog,
     Toast,
@@ -92,7 +92,7 @@ export default {
     HideD () {
       let that = this
       that.showDialog = false
-      this.$router.push({ path: '/signin' })
+      this.$router.push({ path: '/checkin' })
     },
     // 获取午安果数量
     totalFruit () {
@@ -168,7 +168,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.signin{
+.checkin{
   .header{
     height:90px;
     line-height:90px;
@@ -214,7 +214,7 @@ export default {
     margin-bottom: 60px;
   }
 
-  .btn.signin-btn{
+  .btn.checkin-btn{
     width: 200px;
     height: 200px;
     line-height: 1.8;
@@ -227,7 +227,7 @@ export default {
     margin-left: -100px;
   }
 
-  .btn.signin-btn[disabled]{
+  .btn.checkin-btn[disabled]{
     background-color: #bbc9fe;
   }
 
