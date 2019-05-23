@@ -76,7 +76,9 @@ export default {
     const idToken = this.$cookie.get(`${clientId}-id-token`)
     // 登录后链接到签到界面
     if (!idToken) {
-      alert('抱歉，尚未登录')
+      this.showLoadingValue = false
+      this.showToastValue = true
+      this.toastText = '抱歉，你尚未登录'
       this.$router.push({ path: '/login' })
     } else {
       this.signFruitInfo()
@@ -92,7 +94,8 @@ export default {
     HideD () {
       let that = this
       that.showDialog = false
-      this.$router.push({ path: '/checkin' })
+      this.signFruitInfo()
+      this.totalFruit()
     },
     // 获取午安果数量
     totalFruit () {
