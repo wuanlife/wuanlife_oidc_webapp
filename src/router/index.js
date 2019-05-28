@@ -4,7 +4,7 @@ import Router from 'vue-router'
 
 const Login = resolve => require.ensure([], () => resolve(require('../views/login/index')), 'Login') // 登录
 const Signup = resolve => require.ensure([], () => resolve(require('../views/signup/index')), 'Signup') // 注册
-const Signin = resolve => require.ensure([], () => resolve(require('../views/signin/index')), 'Signin') // 签到
+const Checkin = resolve => require.ensure([], () => resolve(require('../views/checkin/index')), 'Checkin') // 签到
 
 Vue.use(Router)
 
@@ -23,8 +23,8 @@ export const constantRouterMap = [
     component: Signup
   },
   {
-    path: '/signin',
-    component: Signin
+    path: '/checkin',
+    component: Checkin
   }
 ]
 
